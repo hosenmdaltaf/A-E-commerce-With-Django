@@ -89,7 +89,7 @@ def LogInView(request):
             messages.warning(request, 'Wrong credentials')
             return redirect('users:loginPage')
         login(request, auth_user)
-        return redirect('users:homepage')
+        return redirect('products:productPage')
     return render(request, 'users/login.html')
 
 
