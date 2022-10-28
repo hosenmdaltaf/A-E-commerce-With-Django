@@ -13,17 +13,11 @@ def RegisterView(request):
     if request.method == 'POST':
 
         email = request.POST.get('email')
-        print(email)
         first_name = request.POST.get('firstname')
-        print(first_name)
         last_name = request.POST.get('lastname')
-        print(last_name)
         mobile_number= request.POST.get('mobilenumber')
-        print(mobile_number)
         password = request.POST.get('password')
-        print(password)
         repeatPassword = request.POST.get('confirmpassword')
-        print(repeatPassword)
 
 
         if not (email and password and repeatPassword and last_name and mobile_number and first_name):
@@ -76,9 +70,9 @@ def LogInView(request):
         profile = Accounts.objects.filter(email=user).first()
 
         ''' User verification checks '''
-        # if not profile.is_verified:
-        #     messages.info(request, 'Your account is not verified!')
-        #     return redirect('Accounts:loginPage')
+        if not profile.is_verified:
+            messages.info(request, 'Your account is not verified!')
+            return redirect('users:loginPage')
 
         if not profile.is_active:
             messages.info(request, 'Your account is not Active!')

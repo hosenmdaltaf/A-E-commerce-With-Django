@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 # from django.utils.translation import ugettext_lazy as _
 
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator 
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 
@@ -16,7 +16,7 @@ class Accounts(AbstractUser):
 
     is_verified = models.BooleanField(
         _('verified'),
-        default=False,
+        default=False, 
         help_text=_(
             'Designates whether this user has been verified.'
             'Un-verified users cannot log in.'
