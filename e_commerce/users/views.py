@@ -17,7 +17,7 @@ def RegisterView(request):
         last_name = request.POST.get('lastname')
         mobile_number= request.POST.get('mobilenumber')
         password = request.POST.get('password')
-        repeatPassword = request.POST.get('confirmpassword')
+        repeatPassword = request.POST.get('confirmpassword') 
 
 
         if not (email and password and repeatPassword and last_name and mobile_number and first_name):
@@ -42,7 +42,6 @@ def RegisterView(request):
             first_name=first_name,
             last_name=last_name,
             mobile_number=mobile_number,
-
         )
         user.set_password(password)
         user.save()
@@ -58,7 +57,6 @@ def LogInView(request):
         password = request.POST.get('password')
 
         user = Accounts.objects.filter(email=email).first() 
-        
         if user is None:
             messages.warning(request, '%s Not found!' % email) 
             return redirect('users:loginPage')

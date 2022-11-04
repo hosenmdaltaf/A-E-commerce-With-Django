@@ -28,7 +28,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100)
     price = models.FloatField()
     discount_price = models.FloatField(blank=True, null=True)
-    category = models.ForeignKey(Category,related_name='products',on_delete=models.CASCADE)
+    category = models.ForeignKey(Category,related_name='products',on_delete=models.CASCADE) 
     description = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='product_img',default='/static/images/default/demo.jpg')
     available = models.BooleanField(default=True)
