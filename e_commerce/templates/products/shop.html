@@ -70,7 +70,7 @@
 					{% for product in all_products %}
 							<li class="col-lg-4 col-md-6 col-sm-6 col-xs-6 ">
 								<div class="product product-style-3 equal-elem ">
-									{% if product.image %}
+									{% if product.image %} 
 									<div class="product-thumnail">
 										<a href="{% url 'products:product_details' product.pk %}" title="T-Shirt Raw Hem Organic Boro Constrast Denim">
 											<figure>
@@ -78,13 +78,13 @@
 											</figure>
 										</a>
 									</div>
-									{% endif %}
+									{% endif %} 
 									<div class="product-info">
 										<a href="{% url 'products:product_details' product.pk %}" class="product-name"><span>{{product.name}}</span></a>
 										<div class="wrap-price">
 											<span class="product-price">{{product.price}}</span>
 										</div>
-									<a href="#" class="btn add-to-cart" id="cartdata">Add To Cart</a> 
+									<a href="#"   data-product="{{product.id}}" data-action="add" class="btn add-to-cart" id="cartdata">Add To Cart</a> 
 									{% comment %} <button class="btn add-to-cart" id="cartdata">Add To Cart</button> {% endcomment %}
 							
 									</div>
@@ -286,38 +286,6 @@
 	</main>
 	<!--main area-->
 
-
-	<script>
-		data = document.getElementById('cartdata')
-		data.addEventListener("click", myFunction);
-		
-		function myFunction() {
-		console.log('This is console log');
-		}
-		{% comment %} if(localStorage.getItem('cart') == null){
-		var cart = {};
-		}
-		else
-		{
-		cart = JSON.parse(localStorage.getItem('cart'));
-		document.getElementById('cart').innerHTML = Object.keys(cart).length;
-		}
-		$('.cart').click(function(){
-		console.log('clicked');
-		var idstr = this.id.toString();
-		console.log(idstr);
-		if (cart[idstr] !=undefined){
-		cart[idstr] = cart[idstr] + 1;
-		}
-		else
-		{
-		cart[idstr] = 1;
-		}
-		console.log(cart);
-		localStorage.setItem('cart', JSON.stringify(cart));
-		document.getElementById('cart').innerHTML = Object.keys(cart).length;
-		}); {% endcomment %}
-		</script>
 
 
 	{% endblock %}

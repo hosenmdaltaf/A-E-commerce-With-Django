@@ -20,9 +20,11 @@
                     <div class="detail-media">
                         <div class="product-gallery">
                           {% comment %} <ul class="slides">
-
+                          
                             <li data-thumb="{{object.image.url}}"> {% endcomment %}
+                            {% if object.image %}
                                 <img src="{{object.image.url}}" alt="product thumbnail" />
+                            {% endif %}
                             {% comment %} </li>
 
                           </ul> {% endcomment %}
@@ -46,7 +48,7 @@
                         {% comment %} <div class="wrap-social">
                             <a class="link-socail" href="#"><img src="assets/images/social-list.png" alt=""></a>
                         </div> {% endcomment %}
-                        <div class="wrap-price"><span class="product-price">$250.00</span></div>
+                        <div class="wrap-price"><span class="product-price">{{object.price}}</span></div>
                         <div class="stock-info in-stock">
                             <p class="availability">Availability: <b>In Stock</b></p>
                         </div>
