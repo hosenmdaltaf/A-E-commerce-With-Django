@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     #third party apps
-    'cart',
     'mptt',
 
     #system own apps
