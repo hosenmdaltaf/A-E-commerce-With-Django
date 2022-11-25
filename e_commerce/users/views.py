@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
 
+
 def RegisterView(request):
     ''' Sign up new user to E-commerce '''
     if request.method == 'POST':
@@ -85,12 +86,13 @@ def LogInView(request):
     return render(request, 'users/login.html')
 
 
-class LogOutView(LoginRequiredMixin, View):
-    ''' Logoutview will logout the current login user '''
+# class LogOutView(LoginRequiredMixin, View):
+#     ''' Logoutview will logout the current login user '''
 
-    def get(self, request):
-        logout(request)
-        return redirect('Accounts:loginPage')
+#     def get(self, request):
+#         logout(request)
+#         return redirect('users:loginPage') 
 
-def index(request):
-    return HttpResponse('You successfully login')
+def LogOutView(request):
+    logout(request)
+    return redirect('users:loginPage') 

@@ -3,6 +3,7 @@ from products.models import Product
 from orders.models import Order,OrderItem
 from users.models import Accounts
 
+
 # Create your views here.
 def all_products(request):
     all_products = Product.objects.all() 
@@ -35,7 +36,8 @@ def all_products(request):
 
 def product_details(request,pk):
     object = Product.objects.get(pk=pk)
-    return render(request,'products/product_details.html',{'object':object})
+    related_products = Product.objects.all() 
+    return render(request,'products/product_details.html',{'related_products':related_products,'object':object})
 
 from django.http import JsonResponse
 import json
@@ -44,7 +46,6 @@ def updateItem(request):
 	data = json.loads(request.body)
 	productId = data['productId']
 	action = data['action']
-
 	customer = request.user
     # customer = request.user.customer
 	product = Product.objects.get(id=productId)
