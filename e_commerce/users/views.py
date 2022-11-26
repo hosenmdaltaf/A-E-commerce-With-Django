@@ -96,3 +96,6 @@ def LogInView(request):
 def LogOutView(request):
     logout(request)
     return redirect('users:loginPage') 
+
+def userProfile(request):
+    return render(request,'users/profile.html')
