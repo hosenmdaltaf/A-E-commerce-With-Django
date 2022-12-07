@@ -1,36 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect, get_object_or_404
 from products.models import Product
 from orders.models import Order,OrderItem
 from users.models import Accounts
-
+from django.contrib.auth.decorators import login_required
+from .forms import ProductForm
 
 # Create your views here.
 def all_products(request):
     all_products = Product.objects.all() 
-    # if request.user.is_authenticated:
-    #     customer = request.user
-    #     print('Customer name')
-    #     print(customer)
-    #     order, created = Order.objects.get_or_create(customer=customer, complete=False)
-    #     print('order details')
-    #     print(order)
-    #     items = order.orderitem_set.all()
-    #     print('items details')
-    #     print(items)
-    #     cartItems = order.get_cart_items
-    #     print('cart items')
-    #     print(cartItems)
-    # else:
-	# 	#Create empty cart for now for non-logged in user
-    #     items = []
-    #     order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
-    #     cartItems = order['get_cart_items']
-
     context = {
-    # 'items':items, 
-    # 'order':order, 
     'all_products':all_products,
-    # 'cartItems':cartItems
     }
     return render(request,'products/shop.html',context)
 
@@ -87,4 +66,37 @@ def cart(request):
      }
 	return render(request, 'orders/cart.html', context) 
 	#return render(request, 'orders/newCart.html', context) 
+
+
+@login_required
+def add_product(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES) 
+
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.vendor = request.user
+            product.save()
+    
+            print(form)
+            return redirect('users:profilePage')
+    else:
+        form = ProductForm()
+    
+    return render(request, 'products/add_product.html', {'form': form})
+
+@login_required
+def edit_product(request, pk):
+    vendor = request.user
+    product = vendor.products.get(pk=pk)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('users:profilePage')
+    else:
+        form = ProductForm(instance=product)
+    
+    return render(request, 'products/edit_product.html', {'form': form,'product': product})
+
    

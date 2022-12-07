@@ -25,7 +25,7 @@ class  Category(MPTTModel):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100) 
     price = models.FloatField()
     discount_price = models.FloatField(blank=True, null=True)
     category = models.ForeignKey(Category,related_name='products',on_delete=models.CASCADE) 
@@ -36,6 +36,7 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     favourites = models.ManyToManyField(Accounts, related_name='favourite', default=None, blank=True)
+    vendor = models.ForeignKey(Accounts, related_name='products', on_delete=models.CASCADE,blank=True, null=True)
 
     is_verified = models.BooleanField(
         _('verified'),
