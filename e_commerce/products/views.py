@@ -6,8 +6,8 @@ from django.contrib.auth.decorators import login_required
 from .forms import ProductForm
 
 # Create your views here.
-def all_products(request):
-    all_products = Product.objects.all() 
+def all_products(request):  
+    all_products = Product.objects.filter(is_verified=True)
     context = {
     'all_products':all_products,
     }
@@ -15,7 +15,7 @@ def all_products(request):
 
 def product_details(request,pk):
     object = Product.objects.get(pk=pk)
-    related_products = Product.objects.all() 
+    related_products = Product.objects.filter(is_verified=True)
     return render(request,'products/product_details.html',{'related_products':related_products,'object':object})
 
 from django.http import JsonResponse
@@ -51,7 +51,7 @@ def cart(request):
 		order, created = Order.objects.get_or_create(customer=customer, complete=False)
 		items = order.orderitem_set.all()
 		cartItems = order.get_cart_items
-		products =Product.objects.all() 
+		products =Product.objects.filter(is_verified=True)[:5]
 	else:
 		#Create empty cart for now for non-logged in user
 		items = []

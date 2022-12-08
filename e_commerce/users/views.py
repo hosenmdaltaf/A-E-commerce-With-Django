@@ -92,36 +92,25 @@ def LogOutView(request):
     return redirect('users:loginPage') 
 
 
-def vendor_admin(request):
-    vendor = request.user.vendor
-    products = vendor.products.all()
-    orders = vendor.orders.all()
-
-    for order in orders:
-        order.vendor_amount = 0
-        order.vendor_paid_amount = 0
-        order.fully_paid = True
-
-        for item in order.items.all():
-            if item.vendor == request.user.vendor:
-                if item.vendor_paid:
-                    order.vendor_paid_amount += item.get_total_price()
-                else:
-                    order.vendor_amount += item.get_total_price()
-                    order.fully_paid = False
-
-    return render(request, 'vendor/vendor_admin.html', {'vendor': vendor, 'products': products, 'orders': orders})
+# customer = request.user.customer
+# 		order, created = Order.objects.get_or_create(customer=customer, complete=False)
+# 		items = order.orderitem_set.all()
+# 		cartItems = order.get_cart_items
 
 def userProfile(request):
     vendor = request.user
-    print(vendor)
     products = vendor.products.all() 
     print(products) 
+    order, created = Order.objects.get_or_create(customer=vendor)
+    items = order.orderitem_set.all()
+    print(items) 
+    # cartItems = order.get_cart_items 
+    # print(cartItems)
     # orders = vendor.order.all()
-    orders = Order.objects.filter(customer=vendor)
+    # orders = Order.objects.filter(customer=vendor)
 
     return render(request,'users/profile.html', {'vendor': vendor, 'products': products,
-    'orders':orders})
+    'items':items})
 
 
 # @login_required

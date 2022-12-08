@@ -55,6 +55,8 @@
                     <div class="product-info">
                      <h3><a href="{% url 'products:product_details' product.pk %}" 
                       class="product-name">{{product.name}}</a> <span>{{product.price}}</span> </h3>
+
+                      <h5>Approved: {{product.is_verified}} </h5>
                     </div> 
 
                     <div class="product-info">
@@ -78,22 +80,18 @@
 
           <div class="box">
             <h2 class="is-size-3 mb-4">My orders</h2>
-        
-            {% if orders %}
-                {% for order in orders %}
+      
+
+                {% if items %}
+               
                     <div class="{% if order.fully_paid %}has-background-success-light{% else %}has-background-info-light{% endif %} mb-2 p-4">
                         <div class="columns is-multiline">
-                            <div class="column is-6">
-                                <h3 class="is-size-4">#{{ order.customer.id }} - {{ order.customer.first_name }} {{ order.customer.last_name }}</h3>
-                            </div>
+                            <!-- <div class="column is-6">
+                                <h3 class="is-size-4">#{{ items.customer.id }} - {{ items.customer.first_name }} {{ items.customer.last_name }}</h3>
+                            </div> -->
         
                             <div class="column is-12">
-                                <b>Name:</b> {{ order.customer.first_name }} {{ order.customer.last_name }}<br>
-                                <b>Address:</b> {{ order.customer.address }}<br>
-                                <b>Zip and place:</b> {{ order.zipcode }} {{ order.place }}<br>
-                                <b>E-mail:</b> {{ order.customer.email }}<br>
-                                <b>Phone:</b> {{ order.customer.phone }}
-        
+                         
                                 <table class="table is-fullwidth mt-4">
                                     <thead>
                                         <tr>
@@ -106,32 +104,29 @@
                                     </thead>
         
                                     <tbody>
-                                        <!-- {% for item in order.items.all %}
-                                            {% if item.vendor == request.user.vendor %} -->
+                                      {% for order in items %}
                                                 <tr>
-                                                    <td>{{ order.name }}</td>
-                                                    <td>${{ item.product.price }}</td>
-                                                    <td>{{ item.quantity }}</td>
-                                                    <td>{{ item.vendor_paid|yesno:"Yes,No" }}</td>
-                                                    <td>${{ item.get_total_price }}</td>
-                                                </tr>
-                                            <!-- {% endif %}
-                                        {% endfor %} -->
+                                                    <td>{{ order.product.name }}</td>
+                                                    <td>${{ order.product.price }}</td>
+                                                    <td>{{ order.quantity }}</td>
+                                                    <td>{{ order.vendor_paid|yesno:"Yes,No" }}</td>
+                                                    <td>${{order.product.get_cart_total}}</td> 
+                                                </tr>  
+                                       {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                {% endfor %}
-                {% else %}
+           
 
+                {% else %}
                 <div>
                   <h1>You Don't have any order yet</h1>
                 </div>
 
             {% endif %}
         </div>
-    
 
 
 {% endblock %}

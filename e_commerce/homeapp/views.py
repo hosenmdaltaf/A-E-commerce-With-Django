@@ -5,7 +5,7 @@ from .models import Slider
 
 def homepage(request):
     all_slider = Slider.objects.all()  
-    products = Product.objects.all() 
+    products = Product.objects.filter(is_verified=True)
     context = {
     'all_slider':all_slider,
     'products':products
