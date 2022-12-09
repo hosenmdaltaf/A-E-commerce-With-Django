@@ -67,11 +67,11 @@
 						<p class="summary-info total-info "><span class="title">Total</span><b class="index">{{order.get_cart_total|floatformat:2}}</b></p>
 					</div>
 					<div class="checkout-info">
-						<a class="btn btn-checkout" href="checkout.html">Check out</a>
+						<a class="btn btn-checkout" href="{% url 'products:checkout' %}">Check out</a>
 						<a class="link-to-shop" href="{% url 'products:productPage' %}">Continue Shopping<i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a>
 					</div>
 					{% comment %} <div class="update-clear">
-						<a class="btn btn-clear" href="#">Clear Shopping Cart</a>
+						<a class="btn btn-clear" href="#">Clear Shopping Cart</a> 
 						<a class="btn btn-update" href="#">Update Shopping Cart</a>
 					</div> {% endcomment %}
 				</div>

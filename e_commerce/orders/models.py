@@ -38,13 +38,26 @@ class OrderItem(models.Model):
 	quantity = models.IntegerField(default=0, null=True, blank=True)
 	date_added = models.DateTimeField(auto_now_add=True) 
 
-	@property
+	@property 
 	def get_total(self):
 		total = self.product.price * self.quantity
 		return total
 
 	def __str__(self):
-            return str(self.product.name)
+        	return str(self.product.name) + str(self.order.customer.email)
+
+
+class ShippingAddress(models.Model):
+	customer = models.ForeignKey(Accounts, on_delete=models.SET_NULL, null=True)
+	order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
+	address = models.CharField(max_length=200, null=False)
+	city = models.CharField(max_length=200, null=False)
+	state = models.CharField(max_length=200, null=False)
+	zipcode = models.CharField(max_length=200, null=False) 
+	date_added = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return self.address
     
 
  

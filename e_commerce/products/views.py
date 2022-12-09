@@ -1,9 +1,10 @@
 from django.shortcuts import render,redirect, get_object_or_404
-from products.models import Product
-from orders.models import Order,OrderItem
+from products.models import Product,Category
+from orders.models import Order,OrderItem,ShippingAddress
 from users.models import Accounts
 from django.contrib.auth.decorators import login_required
-from .forms import ProductForm
+from .forms import ProductForm 
+from django.contrib import messages
 
 # Create your views here.
 def all_products(request):  
@@ -21,6 +22,7 @@ def product_details(request,pk):
 from django.http import JsonResponse
 import json
 
+@login_required(login_url='users:loginPage')
 def updateItem(request):
 	data = json.loads(request.body)
 	productId = data['productId'] 
@@ -44,7 +46,7 @@ def updateItem(request):
 
 	return JsonResponse('Item was added', safe=False)
 
-
+@login_required(login_url='users:loginPage')
 def cart(request):
 	if request.user.is_authenticated:
 		customer = request.user
@@ -56,8 +58,8 @@ def cart(request):
 		#Create empty cart for now for non-logged in user
 		items = []
 		order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
-		cartItems = order['get_cart_items']
-        
+		cartItems = order['get_cart_items'] 
+         
 	context = {
     'items':items, 
     'order':order,
@@ -67,8 +69,46 @@ def cart(request):
 	return render(request, 'orders/cart.html', context) 
 	#return render(request, 'orders/newCart.html', context) 
 
+def checkout(request):
+    if request.user.is_authenticated:
+        customer = request.user
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        items = order.orderitem_set.all()
+        cartItems = order.get_cart_items
+        if request.method == "POST":
+            try:
+                address = request.POST.get("address")
+                city = request.POST.get("city")
+                state = request.POST.get("state")
+                zipcode = request.POST.get("zipcode") 
+                ShippingAddress.objects.create(
+                    customer=customer,
+                    order=order,
+                    address=address,
+                    city=city,
+                    state=state,
+                    zipcode=zipcode,
+                    )
+                return render(request,'homeapp/success.html')
+            except:
+                messages.warning(request, 'Please fill up all the form feild currectly!')
+    else:
+        #Create empty cart for now for non-logged in user
+        items = []
+        order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
+        cartItems = order['get_cart_items']
 
-@login_required
+    context = {'items':items, 'order':order, 'cartItems':cartItems}
+    return render(request, 'orders/checkout.html', context)
+
+
+def category(request, pk):
+    # category = get_object_or_404(Category, pk=pk)
+    category = Product.objects.filter(category=pk).filter(is_verified=True)
+    return render(request, 'products/category.html', {'category': category}) 
+
+
+@login_required(login_url='users:loginPage')
 def add_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES) 
@@ -85,7 +125,7 @@ def add_product(request):
     
     return render(request, 'products/add_product.html', {'form': form})
 
-@login_required
+@login_required(login_url='users:loginPage')
 def edit_product(request, pk):
     vendor = request.user
     product = vendor.products.get(pk=pk)

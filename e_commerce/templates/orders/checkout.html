@@ -1,0 +1,70 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+	<!--main area-->
+	<main id="main" class="main-site">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6">
+
+					<div class="wrap-address-billing">
+						<h3 class="box-title">Billing Address</h3>
+						<form action="#" method="POST" enctype="multipart/form-data" name="frm-billing">
+							{% csrf_token %} 
+							<p class="row-in-form">
+								<label for="add">Address:</label>
+								<input id="add" type="text" name="address" value="" placeholder="Street at apartment number">
+							</p>
+							<p class="row-in-form">
+								<label for="country">State<span>*</span></label>
+								<input id="country" type="text" name="state" value="" placeholder="United States">
+							</p>
+							<p class="row-in-form">
+								<label for="zip-code">Postcode / ZIP:</label>
+								<input id="zip-code" type="number" name="zipcode" value="" placeholder="Your postal code">
+							</p>
+							<p class="row-in-form">
+								<label for="city">Town / City<span>*</span></label>
+								<input id="city" type="text" name="city" value="" placeholder="City name">
+							</p>
+
+							<div class="summary-item payment-method">
+								
+								<button class="btn btn-medium" type="submit">Place order now</button>
+							</div>
+		
+						</form>
+					</div>
+
+				</div>
+
+				<div class="col-md-6">
+
+					<div class="box-element">
+						<a  class="btn btn-outline-dark" href="">&#x2190; Back to Cart</a>
+						<hr>
+						<h3>Order Summary</h3>
+						<hr>
+						{% for item in items %}
+						<div class="cart-row">
+							<div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
+							<div style="flex:2"><p>{{item.product.name}}</p></div>
+							<div style="flex:1"><p>${{item.product.price|floatformat:2}}</p></div>
+							<div style="flex:1"><p>x{{item.quantity}}</p></div>
+						</div>
+						{% endfor %}
+						<h5>Items:   {{order.get_cart_items}}</h5>
+						<h5>Total:   ${{order.get_cart_total|floatformat:2}}</h5>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+
+	</main>
+
+	<!--main area-->
+
+{% endblock %}
