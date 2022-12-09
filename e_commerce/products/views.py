@@ -102,7 +102,7 @@ def checkout(request):
     return render(request, 'orders/checkout.html', context)
 
 
-def category(request, pk):
+def category(request, pk): 
     # category = get_object_or_404(Category, pk=pk)
     category = Product.objects.filter(category=pk).filter(is_verified=True)
     return render(request, 'products/category.html', {'category': category}) 

@@ -15,5 +15,4 @@ def homepage(request):
     return render(request,'homeapp/index.html',context)
 
 def success(request):
- 
     return render(request,'homeapp/success.html')
